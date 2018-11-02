@@ -74,16 +74,26 @@ async function main() {
     try {
       transformImports(content, (importDefs) => {
         importDefs.forEach(async (def) => {
-          if (def.source == null) {
+          try {
+            if (def.source == null) {
+              console.error(
+                chalk.yellow(`Warning: skipping non-static import in '${file}'`)
+              );
+              return;
+            }
+
+            const name = await resolvep(def.source, {
+              basedir: path.dirname(file)
+            });
+            addCount(name, def.importedExport.name);
+          } catch (err) {
             console.error(
-              chalk.yellow(`Warning: skipping non-static import in ${file}`)
+              chalk`{yellow Warning: error occurred processing import in '${file}': }{red ${
+                err.message
+              }}{yellow . Skipping import.}`
             );
             return;
           }
-          const name = await resolvep(def.source, {
-            basedir: path.dirname(file)
-          });
-          addCount(name, def.importedExport.name);
         });
       });
     } catch (err) {
