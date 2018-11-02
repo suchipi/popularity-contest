@@ -1,6 +1,6 @@
 {
   "name": "popularity-contest",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Find the most-imported symbols in your project",
   "main": "index.js",
   "repository": "https://github.com/suchipi/popularity-contest",
