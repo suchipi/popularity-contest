@@ -6,11 +6,19 @@ const chalk = require("chalk");
 const transformImports = require("transform-imports");
 const resolve = require("resolve");
 
+const fsp = pify(fs);
+const resolvep = pify(resolve);
+
 const targets = require("yargs")
   .usage("$0 [file-glob-patterns]")
   .example("$0 'src/**/*.index.js' '!node_modules'").argv._;
-const fsp = pify(fs);
-const resolvep = pify(resolve);
+
+if (targets.length === 0) {
+  console.log(
+    chalk`Please specify a file glob to search over; for instance:\n{blue popularity-contest} {yellow 'src/**/*.js' '!node_modules'}`
+  );
+  process.exit(1);
+}
 
 const counts = {};
 
