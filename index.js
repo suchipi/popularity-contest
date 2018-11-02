@@ -74,6 +74,12 @@ async function main() {
     try {
       transformImports(content, (importDefs) => {
         importDefs.forEach(async (def) => {
+          if (def.source == null) {
+            console.error(
+              chalk.yellow(`Warning: skipping non-static import in ${file}`)
+            );
+            return;
+          }
           const name = await resolvep(def.source, {
             basedir: path.dirname(file)
           });
@@ -81,7 +87,9 @@ async function main() {
         });
       });
     } catch (err) {
-      console.error(chalk.yellow(`Failed to parse '${file}'; skipping`));
+      console.error(
+        chalk.yellow(`Warning: failed to parse '${file}'; skipping`)
+      );
     }
   }
 
