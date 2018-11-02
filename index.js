@@ -6,7 +6,9 @@ const chalk = require("chalk");
 const transformImports = require("transform-imports");
 const resolve = require("resolve");
 
-const targets = require("yargs").argv._;
+const targets = require("yargs")
+  .usage("$0 [file-glob-patterns]")
+  .example("$0 'src/**/*.index.js' '!node_modules'").argv._;
 const fsp = pify(fs);
 const resolvep = pify(resolve);
 
